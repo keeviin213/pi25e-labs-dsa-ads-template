@@ -14,7 +14,7 @@
 #pragma once
 #include <cstddef>
 #include <stdexcept>
-#include <utility>   // for std::move
+
 
 namespace dsa {
 
@@ -30,64 +30,11 @@ public:
     }
 
    
-    DynamicArray(const DynamicArray& other)
-        : data_(nullptr), size_(other.size_), capacity_(other.capacity_) {
 
-        if (capacity_ > 0) {
-            data_ = new T[capacity_];
-            for (std::size_t i = 0; i < size_; ++i) {
-                data_[i] = other.data_[i];
-            }
-        }
-    }
 
-    
-    DynamicArray& operator=(const DynamicArray& other) {
-        if (this == &other) return *this;
+  
 
-        T* newData = nullptr;
-
-        if (other.capacity_ > 0) {
-            newData = new T[other.capacity_];
-            for (std::size_t i = 0; i < other.size_; ++i) {
-                newData[i] = other.data_[i];
-            }
-        }
-
-        delete[] data_;
-
-        data_ = newData;
-        size_ = other.size_;
-        capacity_ = other.capacity_;
-
-        return *this;
-    }
-
-   
-    DynamicArray(DynamicArray&& other) noexcept
-        : data_(other.data_), size_(other.size_), capacity_(other.capacity_) {
-
-        other.data_ = nullptr;
-        other.size_ = 0;
-        other.capacity_ = 0;
-    }
-
-    
-    DynamicArray& operator=(DynamicArray&& other) noexcept {
-        if (this == &other) return *this;
-
-        delete[] data_;
-
-        data_ = other.data_;
-        size_ = other.size_;
-        capacity_ = other.capacity_;
-
-        other.data_ = nullptr;
-        other.size_ = 0;
-        other.capacity_ = 0;
-
-        return *this;
-    }
+     
 
     
     std::size_t size() const { return size_; }
@@ -163,7 +110,7 @@ public:
         T* newData = new T[newCapacity];
 
         for (std::size_t i = 0; i < size_; ++i)
-            newData[i] = std::move(data_[i]);
+            newData[i] = data_[i];
 
         delete[] data_;
 
